@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { QuoteForm } from '@/components/QuoteForm';
+
+export const metadata: Metadata = {
+  title: 'Cotización',
+  description: 'Solicita una cotización personalizada de productos industriales con MaqOn.',
+  alternates: { canonical: '/cotizacion' },
+};
 
 export default function CotizacionPage() {
   return (

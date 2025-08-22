@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { AboutSection } from '@/components/AboutSection';
+
+export const metadata: Metadata = {
+  title: 'Nosotros',
+  description: 'Conoce a MaqOn: misión, valores y experiencia en soluciones industriales.',
+  alternates: { canonical: '/nosotros' },
+};
 
 export default function NosotrosPage() {
   return (

@@ -5,10 +5,26 @@ const HUBSPOT_FORM_ID = process.env.NEXT_PUBLIC_HUBSPOT_FORM_ID;
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { firstName, lastName, email, company, phone, productInterest, quantity, requirements, timeline } = body;
+    if (!HUBSPOT_PORTAL_ID || !HUBSPOT_FORM_ID) {
+      return NextResponse.json(
+        { error: 'Faltan variables de entorno de HubSpot' },
+        { status: 500 }
+      );
+    }
 
-    // Validar campos requeridos
+    const body = await request.json();
+    const {
+      firstName,
+      lastName,
+      email,
+      company,
+      phone,
+      productInterest,
+      quantity,
+      requirements,
+      timeline,
+    } = body;
+
     if (!firstName || !lastName || !email) {
       return NextResponse.json(
         { error: 'Campos requeridos faltantes' },
@@ -16,36 +32,51 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Preparar datos para HubSpot
-    const hubspotData = {
+    // Contexto de HubSpot
+    const hubspotutk = request.cookies.get('hubspotutk')?.value;
+    const pageUri = request.headers.get('referer') || 'https://maqon.com/cotizacion';
+    const pageName = 'Solicitud de Cotización - MaqOn';
+
+    // Payload Forms API v3
+    const payload = {
       fields: [
-        { name: 'firstname', value: firstName },
-        { name: 'lastname', value: lastName },
-        { name: 'email', value: email },
-        { name: 'company', value: company || '' },
-        { name: 'phone', value: phone || '' },
-        { name: 'product_interest', value: productInterest || '' },
-        { name: 'quantity', value: quantity || '' },
-        { name: 'requirements', value: requirements || '' },
-        { name: 'timeline', value: timeline || '' }
+        { name: 'firstname', value: String(firstName) },
+        { name: 'lastname', value: String(lastName) },
+        { name: 'email', value: String(email) },
+        { name: 'company', value: String(company || '') },
+        { name: 'phone', value: String(phone || '') },
+        { name: 'product_interest', value: String(productInterest || '') },
+        { name: 'quantity', value: String(quantity || '') },
+        { name: 'requirements', value: String(requirements || '') },
+        { name: 'timeline', value: String(timeline || '') },
       ],
       context: {
-        pageUri: 'https://maqon.com/cotizacion',
-        pageName: 'Solicitud de Cotización - MaqOn'
-      }
-    };
+        hutk: hubspotutk,
+        pageUri,
+        pageName,
+      },
+    } as const;
 
-    // Enviar a HubSpot (simulado por ahora)
-    // En producción, usar la API real de HubSpot
-    console.log('Datos para HubSpot:', hubspotData);
+    const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`;
 
-    // Simular respuesta exitosa
-    return NextResponse.json({
-      success: true,
-      message: 'Formulario enviado correctamente',
-      data: hubspotData
+    const hsRes = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
     });
 
+    const hsJson = await hsRes.json().catch(() => ({}));
+
+    if (!hsRes.ok) {
+      return NextResponse.json(
+        { error: 'Error al enviar a HubSpot', details: hsJson },
+        { status: 502 }
+      );
+    }
+
+    return NextResponse.json({ success: true, hubspot: hsJson });
   } catch (error) {
     console.error('Error en API HubSpot:', error);
     return NextResponse.json(

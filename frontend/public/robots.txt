@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+
+# Host
+Host: https://maqon.com
+
+# Sitemaps
+Sitemap: https://maqon.com/sitemap.xml

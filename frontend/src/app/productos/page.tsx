@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { FeaturedProducts } from '@/components/FeaturedProducts';
+
+export const metadata: Metadata = {
+  title: 'Productos',
+  description: 'Catálogo de productos industriales disponibles por cotización con MaqOn.',
+  alternates: { canonical: '/productos' },
+};
 
 export default function ProductosPage() {
   return (

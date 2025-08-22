@@ -81,7 +81,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} ${poppins.variable}`}>
       <head>
-        <GoogleAnalytics GA_MEASUREMENT_ID={process.env.GA_MEASUREMENT_ID!} />
+        <GoogleAnalytics />
       </head>
       <body className={`${inter.className} antialiased`}>
         <Header />

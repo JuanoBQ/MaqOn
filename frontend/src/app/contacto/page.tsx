@@ -1,4 +1,11 @@
+import type { Metadata } from 'next'
 import { CTASection } from '@/components/CTASection';
+
+export const metadata: Metadata = {
+  title: 'Contacto',
+  description: 'Ponte en contacto con MaqOn para asesoramiento y cotizaciones de productos industriales.',
+  alternates: { canonical: '/contacto' },
+};
 
 export default function ContactoPage() {
   return (

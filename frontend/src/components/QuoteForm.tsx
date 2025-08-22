@@ -44,17 +44,18 @@ export function QuoteForm() {
     setError('')
 
     try {
-      // Aquí se integraría con HubSpot
-      // Por ahora simulamos el envío
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // En producción, aquí se enviaría a HubSpot:
-      // const response = await fetch('/api/hubspot-submit', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // })
-      
+      const response = await fetch('/api/hubspot-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data?.error || 'Error al enviar a HubSpot')
+      }
+
       setIsSubmitted(true)
       setFormData({
         firstName: '',
@@ -67,8 +68,8 @@ export function QuoteForm() {
         requirements: '',
         timeline: ''
       })
-    } catch (err) {
-      setError('Hubo un error al enviar tu solicitud. Por favor, inténtalo de nuevo.')
+    } catch (err:any) {
+      setError(err?.message || 'Hubo un error al enviar tu solicitud. Por favor, inténtalo de nuevo.')
     } finally {
       setIsSubmitting(false)
     }
