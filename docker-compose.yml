@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: maqon_postgres
+    environment:
+      POSTGRES_DB: maqon_cms
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - maqon_network
+
+  # Redis para cache y sesiones
+  redis:
+    image: redis:7-alpine
+    container_name: maqon_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - maqon_network
+
+  # Strapi CMS
+  strapi:
+    build:
+      context: ./cms
+      dockerfile: Dockerfile
+    container_name: maqon_strapi
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: maqon_cms
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi_password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      NODE_ENV: development
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./cms:/srv/app
+      - /srv/app/node_modules
+      - /srv/app/.tmp
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - maqon_network
+
+  # Backend FastAPI (opcional)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: maqon_backend
+    environment:
+      DATABASE_URL: postgresql://strapi:strapi_password@postgres:5432/maqon_cms
+      REDIS_URL: redis://redis:6379
+      STRAPI_URL: http://strapi:1337
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - postgres
+      - redis
+      - strapi
+    networks:
+      - maqon_network
+
+  # Frontend Next.js
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: maqon_frontend
+    environment:
+      NEXT_PUBLIC_STRAPI_URL: http://localhost:1337
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - strapi
+    networks:
+      - maqon_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  maqon_network:
+    driver: bridge
