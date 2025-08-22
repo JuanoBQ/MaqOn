@@ -159,13 +159,11 @@ export function FeaturedProducts() {
                   )}
                   
                   {/* Category Badge */}
-                  {categoria && (
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
-                        {categoria}
-                      </span>
-                    </div>
-                  )}
+                  <div className="absolute top-3 left-3">
+                    <span className="bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
+                      {categoria || 'Sin categoría'}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Product Content */}
@@ -173,26 +171,26 @@ export function FeaturedProducts() {
                   <h3 className="text-xl font-display font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-200">
                     {nombre || 'Producto sin nombre'}
                   </h3>
-                  
-                  {descripcion && (
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {descripcion}
-                    </p>
-                  )}
+
+                  <p className="text-gray-600 mb-4 line-clamp-3">
+                    {descripcion || 'Sin descripción'}
+                  </p>
 
                   {/* Features */}
-                  {caracteristicas && typeof caracteristicas === 'object' && (
-                    <div className="space-y-2 mb-6">
-                      {Object.entries(caracteristicas).slice(0, 3).map(([key, value]) => (
+                  <div className="space-y-2 mb-6">
+                    {caracteristicas && typeof caracteristicas === 'object' && Object.keys(caracteristicas).length > 0 ? (
+                      Object.entries(caracteristicas).slice(0, 3).map(([key, value]) => (
                         <div key={key} className="flex items-center space-x-2">
                           <div className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0" />
                           <span className="text-sm text-gray-700">
                             <span className="font-medium">{key}:</span> {String(value)}
                           </span>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      ))
+                    ) : (
+                      <div className="text-sm text-gray-600">Características no disponibles</div>
+                    )}
+                  </div>
 
                   {/* Price and CTA */}
                   <div className="flex items-center justify-between">
