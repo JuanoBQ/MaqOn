@@ -10,20 +10,6 @@ export const metadata: Metadata = {
 export default function NosotrosPage() {
   return (
     <div className="min-h-screen">
-      <div className="section-padding bg-gradient-to-br from-primary-50 via-white to-accent-50">
-        <div className="container-custom">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-display font-bold text-gray-900 mb-6">
-              Sobre <span className="gradient-text">MaqOn</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Conoce más sobre nuestra empresa, nuestra misión y los valores que nos guían 
-              para ofrecer el mejor servicio a nuestros clientes.
-            </p>
-          </div>
-        </div>
-      </div>
-      
       <AboutSection />
       
       <div className="section-padding bg-white">

@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import { GoogleAnalytics, Header, Footer } from '@/components'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { FaviconDefinitive } from '@/components/ui/FaviconDefinitive'
+import { Hero } from '@/components'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -18,14 +21,15 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: 'MaqOn - Productos Industriales por Cotización',
+    default: 'MaqOn Maquinaria y equipos',
     template: '%s | MaqOn'
   },
-  description: 'MaqOn ofrece productos industriales de alta calidad por cotización. Solicita tu cotización personalizada y obtén la mejor solución para tu empresa.',
-  keywords: ['productos industriales', 'cotización', 'maquinaria', 'equipos industriales', 'MaqOn'],
+  description: 'MaqOn importación y distribución de maquinaria y equipos industriales de alta calidad. Solicita tu cotización personalizada y obtén la mejor solución para tu empresa.',
+  keywords: ['maquinaria industrial', 'equipos industriales', 'cotización', 'productos industriales', 'MaqOn'],
   authors: [{ name: 'MaqOn Team' }],
   creator: 'MaqOn',
   publisher: 'MaqOn',
+  // Favicon se maneja dinámicamente en el componente Favicon
   formatDetection: {
     email: false,
     address: false,
@@ -36,8 +40,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'MaqOn - Productos Industriales por Cotización',
-    description: 'Productos industriales de alta calidad por cotización personalizada',
+    title: 'MaqOn Maquinaria y equipos',
+    description: 'Maquinaria y equipos',
     url: 'https://maqon.com',
     siteName: 'MaqOn',
     images: [
@@ -45,16 +49,16 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'MaqOn - Productos Industriales',
+        alt: 'MaQon - Maquinaria y equipos industriales',
       },
     ],
     locale: 'es_ES',
     type: 'website',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'MaqOn - Productos Industriales por Cotización',
-    description: 'Productos industriales de alta calidad por cotización personalizada',
+      twitter: {
+      card: 'summary_large_image',
+      title: 'MaqOn Maquinaria y equipos',
+      description: 'Maquinaria y equipos industriales de alta calidad',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -81,14 +85,16 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} ${poppins.variable}`}>
       <head>
-        <GoogleAnalytics />
+        <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX'} />
       </head>
       <body className={`${inter.className} antialiased`}>
+        <FaviconDefinitive />
         <Header />
         <main className="min-h-screen">
           {children}
         </main>
         <Footer />
+        <ScrollToTop />
       </body>
     </html>
   )

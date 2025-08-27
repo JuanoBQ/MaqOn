@@ -10,20 +10,6 @@ export const metadata: Metadata = {
 export default function ContactoPage() {
   return (
     <div className="min-h-screen">
-      <div className="section-padding bg-gradient-to-br from-primary-50 via-white to-accent-50">
-        <div className="container-custom">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-display font-bold text-gray-900 mb-6">
-              <span className="gradient-text">Contacta</span> con Nosotros
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Estamos aquí para ayudarte. Ponte en contacto con nuestro equipo y 
-              te responderemos lo antes posible.
-            </p>
-          </div>
-        </div>
-      </div>
-      
       <CTASection />
       
       <div className="section-padding bg-white" id="ubicacion">

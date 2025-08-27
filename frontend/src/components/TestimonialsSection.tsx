@@ -54,19 +54,19 @@ export function TestimonialsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl font-display font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-gray-900 mb-3 sm:mb-4">
             Lo que dicen nuestros <span className="gradient-text">Clientes</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
             Nuestros clientes confían en MaqOn para sus necesidades industriales. 
             Descubre por qué somos su proveedor preferido.
           </p>
         </motion.div>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
@@ -76,41 +76,41 @@ export function TestimonialsSection() {
               viewport={{ once: true }}
               className="card group"
             >
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {/* Quote Icon */}
-                <div className="mb-4">
-                  <ChatBubbleLeftIcon className="w-8 h-8 text-primary-400" />
+                <div className="mb-3 sm:mb-4">
+                  <ChatBubbleLeftIcon className="w-6 h-6 sm:w-8 sm:h-8 text-primary-400" />
                 </div>
 
                 {/* Rating */}
-                <div className="flex items-center space-x-1 mb-4">
+                <div className="flex items-center space-x-1 mb-3 sm:mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <StarIcon key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                    <StarIcon key={i} className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
 
                 {/* Content */}
-                <p className="text-gray-600 text-sm mb-6 leading-relaxed line-clamp-4">
+                <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 leading-relaxed line-clamp-4">
                   "{testimonial.content}"
                 </p>
 
                 {/* Author */}
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-semibold text-sm">
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center">
+                    <span className="text-white font-semibold text-xs sm:text-sm">
                       {testimonial.name.split(' ').map(n => n[0]).join('')}
                     </span>
                   </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 text-sm">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm sm:text-base font-semibold text-gray-900 truncate">
                       {testimonial.name}
-                    </div>
-                    <div className="text-gray-500 text-xs">
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-600 truncate">
                       {testimonial.position}
-                    </div>
-                    <div className="text-primary-600 text-xs font-medium">
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
                       {testimonial.company}
-                    </div>
+                    </p>
                   </div>
                 </div>
               </div>

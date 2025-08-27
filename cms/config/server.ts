@@ -4,4 +4,6 @@ export default ({ env }) => ({
   app: {
     keys: env.array('APP_KEYS'),
   },
+  // Configuración para servir archivos estáticos
+  url: env('PUBLIC_URL', 'http://localhost:1337'),
 });

@@ -38,13 +38,13 @@ export function CTASection() {
       </div>
 
       <div className="container-custom relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-5xl font-display font-bold mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4 sm:mb-6"
           >
             ¿Listo para transformar tu{' '}
             <span className="gradient-text">producción industrial</span>?
@@ -55,7 +55,7 @@ export function CTASection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
           >
             Únete a cientos de empresas que ya confían en MaqOn para sus necesidades industriales. 
             Nuestro equipo está listo para ayudarte a encontrar la solución perfecta.
@@ -68,7 +68,7 @@ export function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="grid md:grid-cols-3 gap-8 mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16"
         >
           {contactMethods.map((method, index) => (
             <motion.div
@@ -80,13 +80,13 @@ export function CTASection() {
               className="text-center group"
             >
               <Link href={method.href} className="block">
-                <div className={`w-16 h-16 bg-gradient-to-br ${method.color} rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  <method.icon className="w-8 h-8 text-white" />
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${method.color} rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <method.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-primary-400 transition-colors duration-200">
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 group-hover:text-primary-400 transition-colors duration-200">
                   {method.title}
                 </h3>
-                <p className="text-gray-300 group-hover:text-white transition-colors duration-200">
+                <p className="text-sm sm:text-base text-gray-300 group-hover:text-white transition-colors duration-200">
                   {method.description}
                 </p>
               </Link>

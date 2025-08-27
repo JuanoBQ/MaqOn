@@ -84,19 +84,19 @@ export function QuoteForm() {
       >
         <div className="container-custom text-center">
           <div className="max-w-2xl mx-auto">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircleIcon className="w-10 h-10 text-green-600" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+              <CheckCircleIcon className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
             </div>
-            <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-gray-900 mb-3 sm:mb-4">
               ¡Solicitud Enviada!
             </h2>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
               Hemos recibido tu solicitud de cotización. Nuestro equipo se pondrá en contacto 
               contigo en las próximas 24 horas con una propuesta personalizada.
             </p>
             <button
               onClick={() => setIsSubmitted(false)}
-              className="btn-primary"
+              className="btn-primary text-sm sm:text-base px-6 py-3"
             >
               Enviar Otra Cotización
             </button>
@@ -107,58 +107,34 @@ export function QuoteForm() {
   }
 
   return (
-    <section className="section-padding bg-gradient-to-br from-primary-50 to-accent-50">
+    <section className="section-padding bg-gradient-to-br from-primary-50 via-white to-accent-50">
       <div className="container-custom">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <h2 className="text-4xl font-display font-bold text-gray-900">
-              Solicita tu <span className="gradient-text">Cotización</span>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto"
+        >
+          {/* Header */}
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl font-display font-bold text-gray-900 mb-4">
+              Solicita tu <span className="gradient-text">Cotización Personalizada</span>
             </h2>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              Completa el formulario y nuestro equipo de expertos te enviará una cotización 
-              personalizada en menos de 24 horas.
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              Completa el formulario y nuestro equipo te enviará una propuesta adaptada a tus necesidades específicas en menos de 24 horas.
             </p>
-            
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center">
-                  <CheckCircleIcon className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-gray-700">Cotización personalizada en 24h</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center">
-                  <CheckCircleIcon className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-gray-700">Asesoramiento técnico especializado</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center">
-                  <CheckCircleIcon className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-gray-700">Soporte post-venta completo</span>
-              </div>
-            </div>
-          </motion.div>
+          </div>
 
           {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 lg:p-12"
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
               {/* Personal Information */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label htmlFor="firstName" className="form-label">Nombre *</label>
                   <input
@@ -187,7 +163,8 @@ export function QuoteForm() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              {/* Contact Information */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label htmlFor="email" className="form-label">Email *</label>
                   <input
@@ -215,6 +192,7 @@ export function QuoteForm() {
                 </div>
               </div>
 
+              {/* Company */}
               <div>
                 <label htmlFor="company" className="form-label">Empresa</label>
                 <input
@@ -228,25 +206,20 @@ export function QuoteForm() {
                 />
               </div>
 
-              {/* Product Information */}
-              <div className="grid md:grid-cols-2 gap-4">
+              {/* Product Interest */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label htmlFor="productInterest" className="form-label">Producto de Interés *</label>
-                  <select
+                  <input
+                    type="text"
                     id="productInterest"
                     name="productInterest"
                     value={formData.productInterest}
                     onChange={handleInputChange}
                     required
                     className="input-field"
-                  >
-                    <option value="">Selecciona un producto</option>
-                    <option value="compresores">Compresores</option>
-                    <option value="bombas">Bombas</option>
-                    <option value="valvulas">Válvulas</option>
-                    <option value="motores">Motores</option>
-                    <option value="otros">Otros</option>
-                  </select>
+                    placeholder="Ej: Motor industrial, válvula, etc."
+                  />
                 </div>
                 <div>
                   <label htmlFor="quantity" className="form-label">Cantidad</label>
@@ -262,6 +235,21 @@ export function QuoteForm() {
                 </div>
               </div>
 
+              {/* Requirements */}
+              <div>
+                <label htmlFor="requirements" className="form-label">Requerimientos Específicos</label>
+                <textarea
+                  id="requirements"
+                  name="requirements"
+                  value={formData.requirements}
+                  onChange={handleInputChange}
+                  rows={4}
+                  className="input-field resize-none"
+                  placeholder="Describe tus necesidades específicas, especificaciones técnicas, etc."
+                />
+              </div>
+
+              {/* Timeline */}
               <div>
                 <label htmlFor="timeline" className="form-label">Timeline de Entrega</label>
                 <select
@@ -271,50 +259,41 @@ export function QuoteForm() {
                   onChange={handleInputChange}
                   className="input-field"
                 >
-                  <option value="">Selecciona timeline</option>
-                  <option value="urgente">Urgente (1-2 semanas)</option>
-                  <option value="normal">Normal (1-2 meses)</option>
-                  <option value="flexible">Flexible (3+ meses)</option>
+                  <option value="">Selecciona una opción</option>
+                  <option value="urgent">Urgente (1-2 semanas)</option>
+                  <option value="normal">Normal (3-4 semanas)</option>
+                  <option value="flexible">Flexible (1-2 meses)</option>
+                  <option value="custom">Personalizado</option>
                 </select>
               </div>
 
-              <div>
-                <label htmlFor="requirements" className="form-label">Requerimientos Específicos</label>
-                <textarea
-                  id="requirements"
-                  name="requirements"
-                  value={formData.requirements}
-                  onChange={handleInputChange}
-                  rows={4}
-                  className="input-field"
-                  placeholder="Describe tus necesidades específicas, especificaciones técnicas, o cualquier otro detalle importante..."
-                />
-              </div>
-
+              {/* Error Message */}
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <div className="flex items-center space-x-2">
-                    <XMarkIcon className="w-5 h-5 text-red-600" />
-                    <span className="text-red-800">{error}</span>
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-50 border border-red-200 rounded-lg p-4"
+                >
+                  <div className="flex items-center space-x-3">
+                    <XMarkIcon className="w-5 h-5 text-red-500 flex-shrink-0" />
+                    <p className="text-red-700 text-sm">{error}</p>
                   </div>
-                </div>
+                </motion.div>
               )}
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="btn-primary w-full py-4 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? 'Enviando...' : 'Solicitar Cotización'}
-              </button>
-
-              <p className="text-sm text-gray-500 text-center">
-                Al enviar este formulario, aceptas que nos pongamos en contacto contigo 
-                para procesar tu solicitud de cotización.
-              </p>
+              {/* Submit Button */}
+              <div className="text-center pt-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-primary text-base sm:text-lg px-8 py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Enviando...' : 'Solicitar Cotización'}
+                </button>
+              </div>
             </form>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

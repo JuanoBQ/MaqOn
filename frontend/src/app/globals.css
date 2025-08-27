@@ -15,8 +15,8 @@
   }
 
   body {
-    @apply bg-white text-gray-900;
-  }
+  @apply bg-white text-[#030303];
+}
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-display font-semibold;
@@ -25,19 +25,19 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-[#f7b34b] hover:bg-[#e6a02e] text-white font-medium py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#f7b34b] focus:ring-offset-2 text-sm sm:text-base;
   }
 
   .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-primary-600 font-medium py-3 px-6 rounded-lg border-2 border-primary-600 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-white hover:bg-secondary-50 text-[#f7b34b] font-medium py-2 sm:py-3 px-4 sm:px-6 rounded-lg border-2 border-[#f7b34b] transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#f7b34b] focus:ring-offset-2 text-sm sm:text-base;
   }
 
   .btn-outline {
-    @apply bg-transparent hover:bg-primary-50 text-primary-600 font-medium py-3 px-6 rounded-lg border-2 border-primary-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-transparent hover:bg-[#f7b34b]/10 text-[#f7b34b] font-medium py-2 sm:py-3 px-4 sm:px-6 rounded-lg border-2 border-[#f7b34b] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#f7b34b] focus:ring-offset-2 text-sm sm:text-base;
   }
 
   .section-padding {
-    @apply py-16 px-4 sm:px-6 lg:px-8;
+    @apply py-12 sm:py-16 px-4 sm:px-6 lg:px-8;
   }
 
   .container-custom {
@@ -45,7 +45,7 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#f7b34b] to-[#ffc566] bg-clip-text text-transparent;
   }
 
   .card {
@@ -53,11 +53,28 @@
   }
 
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+    @apply w-full px-3 sm:px-4 py-2 sm:py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-[#f7b34b] focus:border-transparent transition-all duration-200 text-sm sm:text-base;
   }
 
   .form-label {
-    @apply block text-sm font-medium text-gray-700 mb-2;
+    @apply block text-sm font-medium text-secondary-700 mb-2;
+  }
+
+  /* Responsive utilities */
+  .mobile-only {
+    @apply block sm:hidden;
+  }
+
+  .desktop-only {
+    @apply hidden sm:block;
+  }
+
+  .tablet-up {
+    @apply hidden md:block;
+  }
+
+  .mobile-tablet {
+    @apply block lg:hidden;
   }
 }
 
@@ -73,6 +90,98 @@
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Responsive text utilities */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl;
+  }
+
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl;
+  }
+
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl;
+  }
+
+  .text-responsive-3xl {
+    @apply text-3xl sm:text-4xl;
+  }
+
+  .text-responsive-4xl {
+    @apply text-4xl sm:text-5xl;
+  }
+
+  .text-responsive-5xl {
+    @apply text-5xl sm:text-6xl;
+  }
+
+  /* Responsive spacing utilities */
+  .space-responsive-xs {
+    @apply space-y-2 sm:space-y-3;
+  }
+
+  .space-responsive-sm {
+    @apply space-y-3 sm:space-y-4;
+  }
+
+  .space-responsive-md {
+    @apply space-y-4 sm:space-y-6;
+  }
+
+  .space-responsive-lg {
+    @apply space-y-6 sm:space-y-8;
+  }
+
+  .space-responsive-xl {
+    @apply space-y-8 sm:space-y-12;
+  }
+
+  /* Responsive padding utilities */
+  .p-responsive-sm {
+    @apply p-3 sm:p-4;
+  }
+
+  .p-responsive-md {
+    @apply p-4 sm:p-6;
+  }
+
+  .p-responsive-lg {
+    @apply p-6 sm:p-8;
+  }
+
+  .p-responsive-xl {
+    @apply p-8 sm:p-12;
+  }
+
+  /* Responsive margin utilities */
+  .m-responsive-sm {
+    @apply m-3 sm:m-4;
+  }
+
+  .m-responsive-md {
+    @apply m-4 sm:m-6;
+  }
+
+  .m-responsive-lg {
+    @apply m-6 sm:m-8;
+  }
+
+  .m-responsive-xl {
+    @apply m-8 sm:m-12;
   }
 }
 
@@ -106,4 +215,37 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Mejoras para dispositivos móviles */
+@media (max-width: 640px) {
+  .container-custom {
+    @apply px-4;
+  }
+  
+  .section-padding {
+    @apply py-8 px-4;
+  }
+}
+
+/* Mejoras para tablets */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container-custom {
+    @apply px-6;
+  }
+  
+  .section-padding {
+    @apply py-12 px-6;
+  }
+}
+
+/* Mejoras para desktop */
+@media (min-width: 1025px) {
+  .container-custom {
+    @apply px-8;
+  }
+  
+  .section-padding {
+    @apply py-16 px-8;
+  }
 }

@@ -1,44 +1,53 @@
 import type { Metadata } from 'next'
-import { FeaturedProducts } from '@/components/FeaturedProducts';
+import { ProductCategories } from '@/components/products/ProductCategories'
 
 export const metadata: Metadata = {
-  title: 'Productos',
-  description: 'Catálogo de productos industriales disponibles por cotización con MaqOn.',
-  alternates: { canonical: '/productos' },
-};
+  title: 'Productos Industriales por Categoría | MaqOn',
+  description: 'Explora nuestra amplia gama de productos industriales organizados por categorías: construcción, agro, metalmecánica, manufactura, elevación y repuestos.',
+  keywords: 'productos industriales, categorías, construcción, agro, metalmecánica, manufactura, elevación, repuestos, MaqOn',
+  alternates: { 
+    canonical: '/productos' 
+  },
+  openGraph: {
+    title: 'Productos Industriales por Categoría | MaqOn',
+    description: 'Descubre productos industriales organizados por categorías especializadas.',
+    url: process.env.SITE_URL || 'http://localhost:3000',
+    siteName: 'MaqOn',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'MaqOn - Productos Industriales por Categoría',
+      },
+    ],
+    locale: 'es_ES',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Productos Industriales por Categoría | MaqOn',
+    description: 'Explora productos industriales organizados por categorías especializadas.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
 
 export default function ProductosPage() {
   return (
-    <div className="min-h-screen">
-      <div className="section-padding bg-gradient-to-br from-primary-50 via-white to-accent-50">
-        <div className="container-custom">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-display font-bold text-gray-900 mb-6">
-              Nuestros <span className="gradient-text">Productos</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Descubre nuestra amplia gama de productos industriales de alta calidad. 
-              Cada producto está diseñado para maximizar la eficiencia y durabilidad.
-            </p>
-          </div>
-        </div>
-      </div>
-      
-      <FeaturedProducts />
-      
-      <div className="section-padding bg-white">
-        <div className="container-custom text-center">
-          <h2 className="text-3xl font-display font-bold text-gray-900 mb-6">
-            ¿No encuentras lo que buscas?
-          </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Nuestro equipo puede ayudarte a encontrar la solución perfecta para tus necesidades específicas.
-          </p>
-          <a href="/cotizacion" className="btn-primary">
-            Solicitar Cotización Personalizada
-          </a>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Product Categories */}
+      <ProductCategories />
     </div>
-  );
+  )
 }
