@@ -57,7 +57,7 @@ export function WhatsAppButton() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         className="group relative w-14 h-14 bg-[#25D366] hover:bg-[#20BA5A] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
-        aria-label="Contactar por WhatsApp"
+        aria-label="Habla con un asesor"
       >
         {/* Pulso animado */}
         <div className="absolute inset-0 bg-[#25D366] rounded-full animate-ping opacity-20"></div>
