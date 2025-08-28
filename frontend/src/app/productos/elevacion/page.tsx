@@ -46,21 +46,7 @@ export const metadata: Metadata = {
 export default function ElevacionPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-orange-600 to-orange-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="text-6xl mb-6">📐</div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Equipos de Elevación
-          </h1>
-          <p className="text-xl lg:text-2xl text-orange-100 max-w-3xl mx-auto">
-            Montacargas, grúas móviles, plataformas elevadoras y sistemas de izaje industrial
-          </p>
-        </div>
-      </div>
-
-      {/* Products List */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ProductList category="elevacion" categoryName="Elevación" />
       </div>
     </div>

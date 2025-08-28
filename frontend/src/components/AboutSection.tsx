@@ -51,8 +51,7 @@ export function AboutSection() {
                 Sobre <span className="gradient-text">MaqOn</span>
               </h2>
               <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
-                Somos especialistas en importación de maquinaria y equipos industriales a Colombia, 
-                con más de 15 años conectando empresas colombianas con tecnología de vanguardia mundial.
+                Somos especialistas en importación de maquinaria y equipos industriales a Colombia, conectando empresas colombianas con tecnología de vanguardia mundial.
               </p>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
                 Nuestra misión es facilitar el acceso a la mejor maquinaria industrial del mundo, 

@@ -62,25 +62,11 @@ export function ProductCategories() {
             >
               {/* Card Header */}
               <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-20 group-hover:opacity-30 transition-opacity duration-300`} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-6xl group-hover:scale-110 transition-transform duration-300">
-                    {category.icon}
-                  </span>
-                </div>
-                
-                {/* Hover Overlay */}
-                <div className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-300 ${
-                  hoveredCard === category.id ? 'opacity-100' : 'opacity-0'
-                }`}>
-                  <Link
-                    href={category.href}
-                    className="bg-[#f7b34b] hover:bg-[#e6a02e] text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
-                  >
-                    <span>Explorar</span>
-                    <ArrowRightIcon className="w-5 h-5" />
-                  </Link>
-                </div>
+                {/* Background Image */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                  style={{ backgroundImage: `url(${category.image})` }}
+                />
               </div>
 
               {/* Card Content */}

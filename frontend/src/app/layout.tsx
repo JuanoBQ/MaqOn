@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import { GoogleAnalytics, Header, Footer } from '@/components'
-import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { FaviconDefinitive } from '@/components/ui/FaviconDefinitive'
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton'
 import { Hero } from '@/components'
 
 const inter = Inter({ 
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     default: 'MaqOn Maquinaria y equipos',
     template: '%s | MaqOn'
   },
-  description: 'MaqOn importación y distribución de maquinaria y equipos industriales de alta calidad. Solicita tu cotización personalizada y obtén la mejor solución para tu empresa.',
+  description: 'MaqOn importación y distribución de maquinaria y equipos industriales de alta calidad. Solicita tu cotización y obtén la mejor solución para tu empresa.',
   keywords: ['maquinaria industrial', 'equipos industriales', 'cotización', 'productos industriales', 'MaqOn'],
   authors: [{ name: 'MaqOn Team' }],
   creator: 'MaqOn',
@@ -94,7 +94,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <ScrollToTop />
+        <WhatsAppButton />
       </body>
     </html>
   )

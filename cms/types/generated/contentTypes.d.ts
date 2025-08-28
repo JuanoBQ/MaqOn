@@ -540,6 +540,61 @@ export interface ApiBlogTagBlogTag extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCotizacionCotizacion extends Struct.CollectionTypeSchema {
+  collectionName: 'cotizaciones';
+  info: {
+    description: 'Solicitudes de cotizaci\u00F3n de productos desde el sitio web';
+    displayName: 'Cotizaci\u00F3n';
+    pluralName: 'cotizaciones';
+    singularName: 'cotizacion';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    cantidad: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
+    cliente_email: Schema.Attribute.Email & Schema.Attribute.Required;
+    cliente_nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    cliente_telefono: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    estado: Schema.Attribute.Enumeration<
+      ['pendiente', 'procesando', 'enviada', 'cerrada']
+    > &
+      Schema.Attribute.DefaultTo<'pendiente'>;
+    fecha_respuesta: Schema.Attribute.DateTime;
+    fecha_solicitud: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cotizacion.cotizacion'
+    > &
+      Schema.Attribute.Private;
+    mensaje: Schema.Attribute.Text;
+    notas_internas: Schema.Attribute.Text;
+    origen: Schema.Attribute.String & Schema.Attribute.DefaultTo<'web'>;
+    prioridad: Schema.Attribute.Enumeration<['baja', 'normal', 'alta']> &
+      Schema.Attribute.DefaultTo<'normal'>;
+    producto_categoria: Schema.Attribute.String;
+    producto_id: Schema.Attribute.Integer;
+    producto_nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    producto_precio: Schema.Attribute.Decimal;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    usuario_asignado: Schema.Attribute.String;
+  };
+}
+
 export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
   collectionName: 'productos';
   info: {
@@ -552,15 +607,19 @@ export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
   };
   attributes: {
     caracteristicas: Schema.Attribute.JSON;
-    categoria: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'Categoria del Producto'>;
+    categoria: Schema.Attribute.Enumeration<
+      ['Construccion', 'Agro', 'Manofactura', 'Elevacion', 'Repuestos', 'Otros']
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     descripcion: Schema.Attribute.Text &
       Schema.Attribute.DefaultTo<'Descripcion del Producto'>;
     disponible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    imagen: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    imagenes: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1094,6 +1153,7 @@ declare module '@strapi/strapi' {
       'api::blog-category.blog-category': ApiBlogCategoryBlogCategory;
       'api::blog-post.blog-post': ApiBlogPostBlogPost;
       'api::blog-tag.blog-tag': ApiBlogTagBlogTag;
+      'api::cotizacion.cotizacion': ApiCotizacionCotizacion;
       'api::producto.producto': ApiProductoProducto;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

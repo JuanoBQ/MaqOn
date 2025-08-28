@@ -1,156 +1,212 @@
-export const dynamic = 'force-dynamic'
-
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { ProductDetail } from '@/components/products/ProductDetail'
 import { strapiClient } from '@/lib/strapi'
+import { Product } from '@/types/product'
 
-interface ProductoParams {
-  params: { id: string }
+interface ProductPageProps {
+  params: {
+    id: string
+  }
 }
 
-async function fetchProducto(id: string) {
-  const numericId = Number(id)
-  if (!Number.isFinite(numericId)) return null
-
-  // Intento 1: endpoint directo /productos/:id
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   try {
-    const res = await strapiClient.getProducto(numericId)
-    const productoDirecto = (res && (res.data ?? res)) || null
-    if (productoDirecto) {
-      console.log('[producto detalle] obtenido por /productos/:id', productoDirecto)
-      return productoDirecto
+    console.log('🔍 Metadata - Parámetro recibido:', params.id)
+    
+    let productData
+    
+    // Si el ID no es numérico, es un documentId de Strapi
+    if (isNaN(parseInt(params.id))) {
+      console.log('🔍 Metadata - Buscando por documentId:', params.id)
+      
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}/api/productos?filters[documentId][$eq]=${params.id}&populate=*`)
+        
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`)
+        }
+        
+        const data = await response.json()
+        
+        if (data.data && data.data.length > 0) {
+          const rawProductData = data.data[0];
+          productData = strapiClient.processProduct(rawProductData)
+        } else {
+          return {
+            title: 'Producto no encontrado | MaqOn',
+            description: 'El producto solicitado no está disponible.'
+          }
+        }
+      } catch (error) {
+        console.error('❌ Error en metadata buscando por documentId:', error)
+        return {
+          title: 'Producto no encontrado | MaqOn',
+          description: 'El producto solicitado no está disponible.'
+        }
+      }
+    } else {
+      // Es un ID numérico
+      const product = await strapiClient.getProducto(parseInt(params.id))
+      
+      if (!product || !product.data) {
+        return {
+          title: 'Producto no encontrado | MaqOn',
+          description: 'El producto solicitado no está disponible.'
+        }
+      }
+      
+      productData = product.data
     }
-  } catch (e) {
-    console.warn('[producto detalle] fallo en /productos/:id, intentando filtro', e)
-  }
+    
+    console.log('🔍 Producto para metadata:', productData)
+    const productName = productData.nombre || 'Producto'
+    const productDescription = productData.descripcion || 'Descripción del producto'
 
-  // Intento 2: filtrar por id
-  try {
-    const alt = await strapiClient.fetch<any>(`/productos?filters[id][$eq]=${numericId}&populate=*`)
-    const productoFiltrado = alt?.data?.[0] || null
-    console.log('[producto detalle] obtenido por filtro', productoFiltrado)
-    return productoFiltrado
-  } catch (e) {
-    console.error('[producto detalle] error al obtener por filtro', e)
-    return null
-  }
-}
-
-export async function generateMetadata({ params }: ProductoParams): Promise<Metadata> {
-  const producto = await fetchProducto(params.id)
-  if (!producto) {
     return {
-      title: 'Producto no encontrado',
-      description: 'El producto solicitado no está disponible.',
-      robots: { index: false },
+      title: `${productName} | MaqOn - Importación de Maquinaria`,
+      description: productDescription,
+      keywords: `${productName}, maquinaria industrial, importación, ${productData.categoria}, MaqOn`,
+      alternates: { 
+        canonical: `/productos/${params.id}` 
+      },
+      openGraph: {
+        title: `${productName} | MaqOn`,
+        description: productDescription,
+        url: `${process.env.SITE_URL || 'http://localhost:3000'}/productos/${params.id}`,
+        siteName: 'MaqOn',
+        images: (() => {
+          // Usar imagenes si existe, sino usar imagen como fallback
+          const images = productData.imagenes?.data || (productData.imagen?.data ? [productData.imagen] : []);
+          
+          if (images.length > 0) {
+            const firstImage = images[0];
+            const imageAttrs = firstImage.data?.attributes || firstImage.attributes || firstImage;
+            return [
+              {
+                url: `${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${imageAttrs.url}`,
+                width: imageAttrs.width || 1200,
+                height: imageAttrs.height || 630,
+                alt: imageAttrs.alternativeText || productName,
+              },
+            ];
+          }
+          
+          return [
+            {
+              url: '/og-image.jpg',
+              width: 1200,
+              height: 630,
+              alt: productName,
+            },
+          ];
+        })(),
+        locale: 'es_ES',
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${productName} | MaqOn`,
+        description: productDescription,
+        images: (() => {
+          const images = productData.imagenes?.data || (productData.imagen?.data ? [productData.imagen] : []);
+          
+          if (images.length > 0) {
+            const firstImage = images[0];
+            const imageAttrs = firstImage.data?.attributes || firstImage.attributes || firstImage;
+            return [`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}${imageAttrs.url}`];
+          }
+          
+          return ['/og-image.jpg'];
+        })(),
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },
     }
-  }
-
-  const siteUrl = process.env.SITE_URL || 'https://maqon.com'
-  const title = `${producto.nombre} | MaqOn`
-  const description = producto.descripcion || 'Producto industrial disponible por cotización con MaqOn.'
-  const imageUrl = producto.imagen?.url ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${producto.imagen.url}` : `${siteUrl}/og-image.jpg`
-  const canonical = `/productos/${producto.id}`
-
-  return {
-    title,
-    description,
-    alternates: { canonical },
-    openGraph: {
-      title,
-      description,
-      url: `${siteUrl}${canonical}`,
-      images: [{ url: imageUrl }],
-      type: 'website',
-      siteName: 'MaqOn',
-    },
+  } catch (error) {
+    console.error('Error generating metadata:', error)
+    return {
+      title: 'Producto | MaqOn',
+      description: 'Descubre nuestros productos industriales importados.'
+    }
   }
 }
 
-export default async function ProductoPage({ params }: ProductoParams) {
-  const producto = await fetchProducto(params.id)
+export default async function ProductPage({ params }: ProductPageProps) {
+  try {
+    console.log('🔍 Parámetro recibido:', params.id)
+    
+    let product
+    let productData
+    
+    // Si el ID no es numérico, es un documentId de Strapi
+    if (isNaN(parseInt(params.id))) {
+      console.log('🔍 Buscando por documentId:', params.id)
+      
+      // Buscar directamente en Strapi por documentId
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}/api/productos?filters[documentId][$eq]=${params.id}&populate=*`)
+        
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`)
+        }
+        
+        const data = await response.json()
+        console.log('📊 Respuesta de Strapi por documentId:', data)
+        
+        if (data.data && data.data.length > 0) {
+          const rawProductData = data.data[0];
+          // Procesar el producto usando el cliente Strapi
+          productData = strapiClient.processProduct(rawProductData)
+          console.log('✅ Producto encontrado por documentId:', productData)
+        } else {
+          console.log('❌ No se encontró producto con documentId:', params.id)
+          notFound()
+        }
+      } catch (error) {
+        console.error('❌ Error buscando por documentId:', error)
+        notFound()
+      }
+    } else {
+      // Es un ID numérico, usar el método normal
+      console.log('🔍 Buscando por ID numérico:', params.id)
+      product = await strapiClient.getProducto(parseInt(params.id))
+      
+      if (!product || !product.data) {
+        console.log('❌ Producto no encontrado por ID numérico')
+        notFound()
+      }
+      
+      productData = product.data
+    }
+    
+    // Debug en desarrollo
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔍 Producto cargado:', productData.nombre)
+      console.log('🖼️ Imágenes disponibles:', productData.imagenes?.length || 0)
+    }
 
-  const nombre = producto?.nombre ?? `Producto #${params.id}`
-  const descripcion = producto?.descripcion
-  const categoria = producto?.categoria
-  const caracteristicas = producto?.caracteristicas
-  const precio = producto?.precio
-  const imagen = producto?.imagen
-  const imageUrl = imagen?.url ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${imagen.url}` : null
+    // El producto ya viene procesado desde el cliente Strapi
+    const transformedProduct: Product = productData as Product
+    
 
-  return (
-    <div className="min-h-screen">
-      <div className="section-padding bg-gradient-to-br from-primary-50 via-white to-accent-50">
-        <div className="container-custom">
-          <nav className="text-sm text-gray-600 mb-6">
-            <Link href="/">Inicio</Link>
-            <span className="mx-2">/</span>
-            <Link href="/productos">Productos</Link>
-            <span className="mx-2">/</span>
-            <span className="text-gray-900 font-medium">{nombre}</span>
-          </nav>
 
-          <div className="grid lg:grid-cols-2 gap-10 items-start">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="relative w-full h-80 bg-gray-100 flex items-center justify-center">
-                {imageUrl ? (
-                  <img src={imageUrl} alt={imagen?.alternativeText || nombre} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-6xl">🏭</span>
-                )}
-              </div>
-              {categoria && (
-                <div className="px-6 py-3">
-                  <span className="bg-primary-600 text-white text-xs px-2 py-1 rounded-full">
-                    {categoria}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div>
-              <h1 className="text-4xl font-display font-bold text-gray-900 mb-4">{nombre}</h1>
-
-              {producto ? (
-                <>
-                  {precio ? (
-                    <div className="text-3xl font-display font-bold text-primary-600 mb-6">€{Number(precio).toLocaleString()}</div>
-                  ) : (
-                    <div className="text-xl font-medium text-gray-700 mb-6">Precio a consultar</div>
-                  )}
-
-                  {descripcion && (
-                    <p className="text-gray-700 leading-relaxed mb-8">{descripcion}</p>
-                  )}
-
-                  {caracteristicas && typeof caracteristicas === 'object' && (
-                    <div className="mb-8">
-                      <h2 className="text-xl font-semibold text-gray-900 mb-4">Características</h2>
-                      <div className="grid md:grid-cols-2 gap-3">
-                        {Object.entries(caracteristicas).map(([key, value]) => (
-                          <div key={key} className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0" />
-                            <span className="text-gray-700"><span className="font-medium capitalize">{key}:</span> {String(value)}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6 text-yellow-800">
-                  No se pudo cargar la información del producto. Verifica que el ID existe y que el CMS está disponible.
-                </div>
-              )}
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/cotizacion" className="btn-primary">Solicitar Cotización</Link>
-                <Link href="/productos" className="btn-outline">Volver a Productos</Link>
-              </div>
-            </div>
-          </div>
-        </div>
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <ProductDetail product={transformedProduct} />
       </div>
-    </div>
-  )
+    )
+  } catch (error) {
+    console.error('Error loading product:', error)
+    notFound()
+  }
 }

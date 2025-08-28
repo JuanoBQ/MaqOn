@@ -93,7 +93,19 @@ export function FeaturedProductsStatic() {
               return null;
             }
 
-            const { nombre, descripcion, categoria, caracteristicas, precio, imagen } = producto;
+            const { nombre, descripcion, categoria, caracteristicas, precio, imagenes, imagen } = producto;
+            
+            // Usar la primera imagen del array imagenes, o imagen como fallback
+            const firstImage = imagenes && imagenes.length > 0 ? imagenes[0] : imagen;
+
+            // Función para validar si el precio debe mostrarse
+            const shouldShowPrice = (price: any): boolean => {
+              if (price === null || price === undefined || price === '') {
+                return false
+              }
+              const numPrice = Number(price)
+              return !isNaN(numPrice) && numPrice > 0
+            }
 
             return (
               <div
@@ -102,10 +114,10 @@ export function FeaturedProductsStatic() {
               >
                 {/* Product Image */}
                 <div className="relative h-40 sm:h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-xl mb-3 sm:mb-4 overflow-hidden">
-                  {imagen?.url ? (
+                  {firstImage?.url ? (
                     <OptimizedImage
-                      src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${imagen.url}`}
-                      alt={imagen.alternativeText || nombre || 'Producto'}
+                      src={firstImage.url.startsWith('http') ? firstImage.url : `${process.env.NEXT_PUBLIC_STRAPI_URL}${firstImage.url}`}
+                      alt={firstImage.alternativeText || nombre || 'Producto'}
                       width={400}
                       height={192}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -114,6 +126,15 @@ export function FeaturedProductsStatic() {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <span className="text-3xl sm:text-4xl">🏭</span>
+                    </div>
+                  )}
+                  
+                  {/* Multiple Images Indicator */}
+                  {imagenes && imagenes.length > 1 && (
+                    <div className="absolute top-2 sm:top-3 right-2 sm:right-3">
+                      <span className="bg-black/60 text-white text-xs px-2 py-1 rounded-full">
+                        +{imagenes.length - 1}
+                      </span>
                     </div>
                   )}
                   
@@ -153,7 +174,7 @@ export function FeaturedProductsStatic() {
 
                   {/* Price and CTA */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
-                    {precio ? (
+                    {shouldShowPrice(precio) ? (
                       <div className="text-xl sm:text-2xl font-display font-bold text-primary-600">
                         €{Number(precio).toLocaleString()}
                       </div>

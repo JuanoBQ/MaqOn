@@ -85,29 +85,6 @@ export function IndustrialSectors() {
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                   style={{ backgroundImage: `url(${category.image})` }}
                 />
-                
-                {/* Overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-80 group-hover:opacity-90 transition-opacity duration-300`} />
-                
-                {/* Icon */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-6xl group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
-                    {category.icon}
-                  </span>
-                </div>
-                
-                {/* Hover Overlay with CTA */}
-                <div className={`absolute inset-0 bg-black/60 flex items-center justify-center transition-all duration-300 ${
-                  hoveredCard === category.id ? 'opacity-100' : 'opacity-0'
-                }`}>
-                  <Link
-                    href={category.href}
-                    className="bg-primary-500 hover:bg-primary-600 text-white font-semibold px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 shadow-lg"
-                  >
-                    <span>Explorar Sector</span>
-                    <ArrowRightIcon className="w-5 h-5" />
-                  </Link>
-                </div>
               </div>
 
               {/* Card Content */}
@@ -168,7 +145,7 @@ export function IndustrialSectors() {
               href="/cotizacion"
               className="btn-secondary"
             >
-              Solicitar Cotización
+              Escribenos
             </Link>
           </div>
         </motion.div>

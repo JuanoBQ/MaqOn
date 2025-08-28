@@ -1,0 +1,85 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cotizaciones",
+  "info": {
+    "singularName": "cotizacion",
+    "pluralName": "cotizaciones",
+    "displayName": "Cotización",
+    "description": "Solicitudes de cotización de productos desde el sitio web"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cliente_nombre": {
+      "type": "string",
+      "required": true
+    },
+    "cliente_email": {
+      "type": "email",
+      "required": true
+    },
+    "cliente_telefono": {
+      "type": "string",
+      "required": true
+    },
+    "producto_id": {
+      "type": "integer"
+    },
+    "producto_nombre": {
+      "type": "string",
+      "required": true
+    },
+    "producto_categoria": {
+      "type": "string"
+    },
+    "producto_precio": {
+      "type": "decimal"
+    },
+    "cantidad": {
+      "type": "integer",
+      "default": 1,
+      "min": 1
+    },
+    "mensaje": {
+      "type": "text"
+    },
+    "fecha_solicitud": {
+      "type": "datetime",
+      "required": true
+    },
+    "origen": {
+      "type": "string",
+      "default": "web"
+    },
+    "estado": {
+      "type": "enumeration",
+      "enum": [
+        "pendiente",
+        "procesando",
+        "enviada",
+        "cerrada"
+      ],
+      "default": "pendiente"
+    },
+    "prioridad": {
+      "type": "enumeration",
+      "enum": [
+        "baja",
+        "normal",
+        "alta"
+      ],
+      "default": "normal"
+    },
+    "notas_internas": {
+      "type": "text"
+    },
+    "fecha_respuesta": {
+      "type": "datetime"
+    },
+    "usuario_asignado": {
+      "type": "string"
+    }
+  }
+}

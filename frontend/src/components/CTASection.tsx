@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRightIcon, PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/outline'
+import { ArrowRightIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
 
 const contactMethods = [
   {
@@ -18,13 +18,6 @@ const contactMethods = [
     description: 'info@maqon.com',
     href: 'mailto:info@maqon.com',
     color: 'from-green-500 to-green-600'
-  },
-  {
-    icon: MapPinIcon,
-    title: 'Visítanos',
-    description: 'Calle Industrial 123, Madrid',
-    href: '/contacto#ubicacion',
-    color: 'from-purple-500 to-purple-600'
   }
 ]
 
@@ -68,7 +61,7 @@ export function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16 justify-center"
         >
           {contactMethods.map((method, index) => (
             <motion.div
@@ -104,11 +97,10 @@ export function CTASection() {
         >
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 max-w-4xl mx-auto">
             <h3 className="text-2xl font-display font-bold mb-4">
-              ¡Tu cotización personalizada está a solo un clic de distancia!
+              ¡Tu cotización está a solo un clic de distancia!
             </h3>
             <p className="text-gray-300 mb-8">
-              Completa nuestro formulario y recibe una propuesta adaptada a tus necesidades 
-              en menos de 24 horas. Sin compromisos, solo soluciones.
+              Completa nuestro formulario y recibe una propuesta adaptada. Sin compromisos, solo soluciones.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -116,7 +108,7 @@ export function CTASection() {
                 href="/cotizacion" 
                 className="bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-200 transform hover:scale-105 inline-flex items-center"
               >
-                Solicitar Cotización Gratuita
+                Solicitar Cotización
                 <ArrowRightIcon className="w-5 h-5 ml-2" />
               </Link>
               
@@ -127,30 +119,10 @@ export function CTASection() {
                 Hablar con un Experto
               </Link>
             </div>
-
-            <p className="text-sm text-gray-400 mt-6">
-              ✨ Sin costos ocultos • Respuesta en 24h • Asesoría técnica incluida
-            </p>
           </div>
         </motion.div>
 
-        {/* Trust Indicators */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <p className="text-gray-400 mb-6">Confían en nosotros empresas como:</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-            <div className="text-2xl font-bold text-gray-600">🏭 Industrias del Norte</div>
-            <div className="text-2xl font-bold text-gray-600">🚗 AutoSur</div>
-            <div className="text-2xl font-bold text-gray-600">🧪 Química Central</div>
-            <div className="text-2xl font-bold text-gray-600">🧵 Textil Este</div>
-            <div className="text-2xl font-bold text-gray-600">⚡ Energía Plus</div>
-          </div>
-        </motion.div>
+
       </div>
     </section>
   )

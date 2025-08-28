@@ -7,7 +7,7 @@ Disallow: /_next
 Disallow: /private
 
 # Host
-Host: https://maqon.comy
+Host: https://maqon.com
 
 # Sitemaps
-Sitemap: https://maqon.comy/sitemap.xml
+Sitemap: https://maqon.com/sitemap.xml

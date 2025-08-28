@@ -128,7 +128,7 @@ export function Header() {
                          animationDelay: `${index * 50}ms`
                        }}
                      >
-                       <span className="text-lg group-hover:scale-110 transition-transform duration-200">{category.icon}</span>
+
                        <span className="font-medium group-hover:translate-x-1 transition-transform duration-200">
                          {category.name}
                        </span>
@@ -153,11 +153,11 @@ export function Header() {
              </div>
           </div>
 
-          {/* CTA Button */}
+                    {/* CTA Button */}
           <div className="hidden lg:block">
-                         <Link href="/cotizacion" className="bg-[#f7b34b] hover:bg-[#e6a02e] text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm">
-               Solicitar Cotización
-             </Link>
+            <Link href="/cotizacion" className="bg-[#f7b34b] hover:bg-[#e6a02e] text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm">
+              Solicitar Cotización
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -192,7 +192,7 @@ export function Header() {
               onClick={() => setMobileMenuOpen(false)} 
             />
             
-            {/* Menu Panel */}
+                        {/* Menu Panel */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -200,28 +200,36 @@ export function Header() {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl"
             >
-                             {/* Header */}
-               <div className="flex items-center justify-between p-4 sm:p-6 border-b border-secondary-200 bg-secondary-800">
-                 <div onClick={() => setMobileMenuOpen(false)}>
-                   <Logo size="md" clickable={true} />
-                 </div>
-                <button
-                  type="button"
-                                     className="text-white hover:text-[#f7b34b] p-2 rounded-lg hover:bg-secondary-700 transition-colors duration-200"
-                  onClick={() => setMobileMenuOpen(false)}
-                  aria-label="Cerrar menú de navegación"
-                >
-                  <XMarkIcon className="h-6 w-6" />
-                </button>
-              </div>
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 bg-[#030303]">
+                <div onClick={() => setMobileMenuOpen(false)}>
+                  <Logo size="md" clickable={true} />
+                </div>
+               <button
+                 type="button"
+                 className="text-white hover:text-[#f7b34b] p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                 onClick={() => setMobileMenuOpen(false)}
+                 aria-label="Cerrar menú de navegación"
+               >
+                 <XMarkIcon className="h-6 w-6" />
+               </button>
+             </div>
               
               {/* Navigation Items */}
-              <div className="p-4 sm:p-6 space-y-2">
+              <div className="p-4 sm:p-6 space-y-2 bg-gray-50 flex-1">
+                {/* Welcome Message */}
+                <div className="mb-6 pb-4 border-b border-gray-200">
+                  <h3 className="text-gray-800 font-semibold text-lg">Navegación</h3>
+                  <p className="text-gray-600 text-sm mt-1">Explora nuestros productos y servicios</p>
+                </div>
+
+
+                
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="block text-white hover:text-[#f7b34b] font-medium py-3 px-4 rounded-lg hover:bg-secondary-700 transition-all duration-200 text-base"
+                    className="block text-gray-800 hover:text-[#f7b34b] font-medium py-3 px-4 rounded-lg hover:bg-white hover:shadow-sm transition-all duration-200 text-base"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
@@ -229,8 +237,8 @@ export function Header() {
                 ))}
                 
                 {/* Productos en Móvil */}
-                <div className="border-t border-secondary-200 my-4 pt-4">
-                  <div className="text-white font-medium px-4 mb-3 text-sm text-secondary-300">
+                <div className="border-t border-gray-200 my-4 pt-4">
+                  <div className="text-gray-600 font-medium px-4 mb-3 text-sm uppercase tracking-wide">
                     Productos
                   </div>
                   <div className="space-y-1">
@@ -238,7 +246,7 @@ export function Header() {
                       <Link
                         key={category.id}
                         href={category.href}
-                        className="flex items-center space-x-3 py-2 px-4 text-white/80 hover:text-[#f7b34b] hover:bg-secondary-700 rounded-lg transition-all duration-200 text-sm"
+                        className="flex items-center space-x-3 py-2 px-4 text-gray-700 hover:text-[#f7b34b] hover:bg-white hover:shadow-sm rounded-lg transition-all duration-200 text-sm"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         <span className="text-base">{category.icon}</span>
@@ -249,13 +257,13 @@ export function Header() {
                 </div>
                 
                 {/* Divider */}
-                <div className="border-t border-secondary-200 my-4"></div>
+                <div className="border-t border-gray-200 my-4"></div>
                 
-                {/* CTA Button */}
-                <div className="pt-2">
+                                {/* CTA Button */}
+                <div className="pt-2 px-2">
                   <Link
                     href="/cotizacion"
-                                         className="bg-[#f7b34b] hover:bg-[#e6a02e] text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 text-base w-full text-center block"
+                    className="bg-[#f7b34b] hover:bg-[#e6a02e] text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 text-base w-full text-center block shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Solicitar Cotización

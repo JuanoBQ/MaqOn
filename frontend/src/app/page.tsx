@@ -2,10 +2,6 @@ import type { Metadata } from 'next'
 import {
   Hero,
   IndustrialSectors,
-  AboutSection,
-  ServicesSection,
-  QuoteForm,
-  TestimonialsSection,
   CTASection
 } from '@/components';
 
@@ -56,10 +52,6 @@ export default function HomePage() {
     <div className="min-h-screen">
       <Hero />
       <IndustrialSectors />
-      <AboutSection />
-      <ServicesSection />
-      <QuoteForm />
-      <TestimonialsSection />
       <CTASection />
     </div>
   )

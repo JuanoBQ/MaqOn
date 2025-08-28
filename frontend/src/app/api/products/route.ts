@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { strapiClient } from '@/lib/strapi'
 
-// Simulación de productos - En producción esto vendría de Strapi
-const mockProducts = [
+// Fallback products en caso de que Strapi no esté disponible
+const fallbackProducts = [
   {
     id: 1,
     documentId: "prod001",
@@ -52,74 +53,6 @@ const mockProducts = [
     imagen: "/images/industries/agro.jpg",
     createdAt: "2024-01-17T10:00:00Z",
     updatedAt: "2024-01-17T10:00:00Z"
-  },
-  {
-    id: 4,
-    documentId: "prod004",
-    nombre: "Torno CNC Haas ST-20",
-    descripcion: "Torno CNC de alta precisión para mecanizado de piezas metálicas complejas.",
-    categoria: "metalmecanica",
-    caracteristicas: {
-      "Diámetro": "508 mm",
-      "Longitud": "762 mm",
-      "Control": "Haas CNC"
-    },
-    precio: 65000,
-    disponible: true,
-    imagen: "/images/industries/metalmecanica.jpg",
-    createdAt: "2024-01-18T10:00:00Z",
-    updatedAt: "2024-01-18T10:00:00Z"
-  },
-  {
-    id: 5,
-    documentId: "prod005",
-    nombre: "Robot Industrial ABB",
-    descripcion: "Robot industrial de 6 ejes para automatización de líneas de producción.",
-    categoria: "manufactura",
-    caracteristicas: {
-      "Carga": "10 kg",
-      "Alcance": "1.45 metros",
-      "Precisión": "±0.02 mm"
-    },
-    precio: 35000,
-    disponible: true,
-    imagen: "/images/industries/manufacturing.jpg",
-    createdAt: "2024-01-19T10:00:00Z",
-    updatedAt: "2024-01-19T10:00:00Z"
-  },
-  {
-    id: 6,
-    documentId: "prod006",
-    nombre: "Montacargas Toyota",
-    descripcion: "Montacargas eléctrico de alta capacidad para operaciones logísticas y almacenes.",
-    categoria: "elevacion",
-    caracteristicas: {
-      "Capacidad": "2.5 toneladas",
-      "Altura": "6 metros",
-      "Tipo": "Eléctrico"
-    },
-    precio: 28000,
-    disponible: true,
-    imagen: "/images/industries/elevacion.jpg",
-    createdAt: "2024-01-20T10:00:00Z",
-    updatedAt: "2024-01-20T10:00:00Z"
-  },
-  {
-    id: 7,
-    documentId: "prod007",
-    nombre: "Kit de Repuestos Motor Diesel",
-    descripcion: "Kit completo de repuestos para motores diesel industriales de 50-100 HP.",
-    categoria: "repuestos",
-    caracteristicas: {
-      "Aplicación": "50-100 HP",
-      "Incluye": "Pistones, anillos, válvulas",
-      "Garantía": "12 meses"
-    },
-    precio: 1200,
-    disponible: true,
-    imagen: "/images/industries/repuestos.jpg",
-    createdAt: "2024-01-21T10:00:00Z",
-    updatedAt: "2024-01-21T10:00:00Z"
   }
 ]
 
@@ -127,32 +60,73 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
+    const search = searchParams.get('search')
     
-    let filteredProducts = mockProducts
+    console.log('🔍 API Products - Categoría solicitada:', category)
+    console.log('🔍 API Products - Búsqueda solicitada:', search)
     
-    // Filtrar por categoría si se especifica
-    if (category) {
-      filteredProducts = mockProducts.filter(product => 
-        product.categoria.toLowerCase() === category.toLowerCase()
+    let products = []
+    
+    try {
+      // Intentar obtener productos desde Strapi
+      if (category) {
+        console.log('🔍 Buscando productos para categoría:', category)
+        products = await strapiClient.getProductosByCategory(category)
+      } else {
+        console.log('🔍 Obteniendo todos los productos')
+        products = await strapiClient.getAllProductos()
+      }
+      
+      console.log('✅ Productos obtenidos desde Strapi:', products.length)
+      if (products.length > 0) {
+        console.log('📋 Primeros productos:', products.slice(0, 3).map((p: any) => ({ id: p.id, nombre: p.nombre, categoria: p.categoria })))
+        console.log('🖼️ Imagen del primer producto:', products[0].imagen)
+      }
+      
+    } catch (strapiError) {
+      console.warn('⚠️ Error con Strapi, usando productos fallback:', strapiError)
+      
+      // Usar productos fallback si Strapi no está disponible
+      products = fallbackProducts
+      
+      // Filtrar por categoría si se especifica
+      if (category) {
+        products = fallbackProducts.filter((product: any) => 
+          product.categoria.toLowerCase() === category.toLowerCase()
+        )
+      }
+    }
+
+    // Aplicar filtro de búsqueda si se especifica
+    if (search && search.trim()) {
+      const searchTerm = search.toLowerCase().trim()
+      products = products.filter((product: any) => 
+        product.nombre.toLowerCase().includes(searchTerm) ||
+        product.descripcion.toLowerCase().includes(searchTerm) ||
+        product.categoria.toLowerCase().includes(searchTerm)
       )
+      console.log('🔍 Productos filtrados por búsqueda:', products.length)
     }
     
-    // Simular delay de red
-    await new Promise(resolve => setTimeout(resolve, 500))
+    // Filtrar solo productos disponibles
+    const availableProducts = products.filter((product: any) => product.disponible !== false)
     
     return NextResponse.json({
       success: true,
-      products: filteredProducts,
-      total: filteredProducts.length,
-      category: category || 'all'
+      products: availableProducts,
+      total: availableProducts.length,
+      category: category || 'all',
+      source: products.length > 0 && products[0].documentId?.startsWith('prod') ? 'fallback' : 'strapi'
     })
     
   } catch (error) {
-    console.error('Error en API de productos:', error)
+    console.error('❌ Error en API de productos:', error)
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Error interno del servidor' 
+        error: 'Error interno del servidor',
+        products: [],
+        total: 0
       },
       { status: 500 }
     )

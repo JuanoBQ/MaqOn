@@ -100,14 +100,6 @@ export function ServicesSection() {
                   ))}
                 </div>
 
-                {/* CTA */}
-                <Link 
-                  href={service.href}
-                  className="btn-outline w-full text-center group-hover:bg-primary-50 transition-colors duration-200"
-                >
-                  {service.cta}
-                  <ArrowRightIcon className="w-4 h-4 ml-2 inline" />
-                </Link>
               </div>
             </motion.div>
           ))}

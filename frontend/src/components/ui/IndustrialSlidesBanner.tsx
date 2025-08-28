@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -11,8 +10,6 @@ interface IndustrySlide {
   tagline: string
   description: string
   image: string
-  ctaText: string
-  ctaLink: string
   accentColor: string
 }
 
@@ -23,28 +20,22 @@ const industrySlides: IndustrySlide[] = [
     tagline: 'Conectando Colombia con el mundo',
     description: 'Especialistas en importación de maquinaria y equipos industriales de alta calidad. Facilitamos el acceso a tecnología de vanguardia para impulsar tu industria.',
     image: '/images/industries/construction.jpg',
-    ctaText: 'Conocer Nuestros Servicios',
-    ctaLink: '/servicios',
     accentColor: '#f7b34b'
   },
   {
     id: 'construccion',
     name: 'Construcción',
     tagline: 'Construyendo el futuro de Colombia',
-    description: 'Importamos equipos de construcción de última generación: excavadoras, grúas, hormigoneras y maquinaria pesada para proyectos civiles e industriales.',
+    description: 'Importamos equipos de construcción de última generación para proyectos civiles e industriales.',
     image: '/images/industries/construction.jpg',
-    ctaText: 'Ver Equipos de Construcción',
-    ctaLink: '/productos/construccion',
     accentColor: '#007AFF'
   },
   {
     id: 'agro',
     name: 'Sector Agroindustrial',
     tagline: 'Potenciando el campo colombiano',
-    description: 'Tecnología agrícola importada: tractores, sistemas de riego, procesadoras y equipos agroindustriales para modernizar la agricultura colombiana.',
+    description: 'Tecnología agrícola importada, equipos agroindustriales para modernizar la agricultura colombiana.',
     image: '/images/industries/agro.jpg',
-    ctaText: 'Explorar Equipos Agrícolas',
-    ctaLink: '/productos/agro',
     accentColor: '#34C759'
   }
 ]
@@ -244,23 +235,7 @@ export function IndustrialSlidesBanner() {
                    {currentIndustry.description}
                  </motion.p>
                 
-                {/* CTA Button - Apple Style */}
-                <motion.div
-                  key={`button-${currentSlide}`}
-                  variants={textVariants}
-                  initial="hidden"
-                  animate="visible"
-                  transition={{ delay: 0.6 }}
-                  className="mt-12"
-                >
-                  <Link 
-                    href={currentIndustry.ctaLink}
-                    className="group inline-flex items-center px-8 py-4 bg-white text-black font-medium text-lg rounded-full transition-all duration-300 hover:bg-white/90 hover:scale-105"
-                  >
-                    <span className="mr-2">{currentIndustry.ctaText}</span>
-                    <ChevronRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </motion.div>
+                
               </div>
             </div>
           </motion.div>
