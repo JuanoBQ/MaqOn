@@ -96,7 +96,7 @@ export function FeaturedProductsStatic() {
             const { nombre, descripcion, categoria, caracteristicas, precio, imagenes, imagen } = producto;
             
             // Usar la primera imagen del array imagenes, o imagen como fallback
-            const firstImage = imagenes && imagenes.length > 0 ? imagenes[0] : imagen;
+            const firstImage = imagenes && imagenes.data && imagenes.data.length > 0 ? imagenes.data[0] : imagen;
 
             // Función para validar si el precio debe mostrarse
             const shouldShowPrice = (price: any): boolean => {
@@ -114,26 +114,32 @@ export function FeaturedProductsStatic() {
               >
                 {/* Product Image */}
                 <div className="relative h-40 sm:h-48 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-t-xl mb-3 sm:mb-4 overflow-hidden">
-                  {firstImage?.url ? (
-                    <OptimizedImage
-                      src={firstImage.url.startsWith('http') ? firstImage.url : `${process.env.NEXT_PUBLIC_STRAPI_URL}${firstImage.url}`}
-                      alt={firstImage.alternativeText || nombre || 'Producto'}
-                      width={400}
-                      height={192}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      fallback="/images/placeholder-product.jpg"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-3xl sm:text-4xl">🏭</span>
-                    </div>
-                  )}
+                  {(() => {
+                    // Manejar diferentes estructuras de imagen
+                    const imageUrl = (firstImage as any)?.attributes?.url || (firstImage as any)?.url;
+                    const imageAlt = (firstImage as any)?.attributes?.alternativeText || (firstImage as any)?.alternativeText || nombre || 'Producto';
+                    
+                    return imageUrl ? (
+                      <OptimizedImage
+                        src={imageUrl.startsWith('http') ? imageUrl : `${process.env.NEXT_PUBLIC_STRAPI_URL}${imageUrl}`}
+                        alt={imageAlt}
+                        width={400}
+                        height={192}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        fallback="/images/placeholder-product.jpg"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-3xl sm:text-4xl">🏭</span>
+                      </div>
+                    );
+                  })()}
                   
                   {/* Multiple Images Indicator */}
-                  {imagenes && imagenes.length > 1 && (
+                  {imagenes && imagenes.data && imagenes.data.length > 1 && (
                     <div className="absolute top-2 sm:top-3 right-2 sm:right-3">
                       <span className="bg-black/60 text-white text-xs px-2 py-1 rounded-full">
-                        +{imagenes.length - 1}
+                        +{imagenes.data.length - 1}
                       </span>
                     </div>
                   )}
